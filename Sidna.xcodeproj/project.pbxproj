@@ -19,6 +19,9 @@
 		984B7898177AA1FB0077045B /* SDNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 984B7897177AA1FB0077045B /* SDNViewController.m */; };
 		984B789B177AA1FB0077045B /* SDNViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 984B7899177AA1FB0077045B /* SDNViewController_iPhone.xib */; };
 		984B789E177AA1FB0077045B /* SDNViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 984B789C177AA1FB0077045B /* SDNViewController_iPad.xib */; };
+		984B78A6177AA2F10077045B /* SDNString.m in Sources */ = {isa = PBXBuildFile; fileRef = 984B78A5177AA2F10077045B /* SDNString.m */; };
+		984B78AC177AA67B0077045B /* SDNAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 984B78AB177AA67B0077045B /* SDNAudio.m */; };
+		984B78AE177AA6C30077045B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 984B78AD177AA6C30077045B /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,13 @@
 		984B7897177AA1FB0077045B /* SDNViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDNViewController.m; sourceTree = "<group>"; };
 		984B789A177AA1FB0077045B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SDNViewController_iPhone.xib; sourceTree = "<group>"; };
 		984B789D177AA1FB0077045B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SDNViewController_iPad.xib; sourceTree = "<group>"; };
+		984B78A4177AA2F10077045B /* SDNString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDNString.h; sourceTree = "<group>"; };
+		984B78A5177AA2F10077045B /* SDNString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDNString.m; sourceTree = "<group>"; };
+		984B78A8177AA35B0077045B /* CGGeometryAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGGeometryAdditions.h; sourceTree = "<group>"; };
+		984B78AA177AA67B0077045B /* SDNAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDNAudio.h; sourceTree = "<group>"; };
+		984B78AB177AA67B0077045B /* SDNAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDNAudio.m; sourceTree = "<group>"; };
+		984B78AD177AA6C30077045B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		984B78AF177AA81E0077045B /* SDNConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDNConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				984B78AE177AA6C30077045B /* AudioToolbox.framework in Frameworks */,
 				984B787F177AA1FB0077045B /* UIKit.framework in Frameworks */,
 				984B7881177AA1FB0077045B /* Foundation.framework in Frameworks */,
 				984B7883177AA1FB0077045B /* CoreGraphics.framework in Frameworks */,
@@ -58,6 +69,7 @@
 		984B7872177AA1FB0077045B = {
 			isa = PBXGroup;
 			children = (
+				984B78AD177AA6C30077045B /* AudioToolbox.framework */,
 				984B7884177AA1FB0077045B /* Sidna */,
 				984B787D177AA1FB0077045B /* Frameworks */,
 				984B787C177AA1FB0077045B /* Products */,
@@ -85,12 +97,12 @@
 		984B7884177AA1FB0077045B /* Sidna */ = {
 			isa = PBXGroup;
 			children = (
+				984B78A8177AA35B0077045B /* CGGeometryAdditions.h */,
+				984B78AF177AA81E0077045B /* SDNConstants.h */,
 				984B788D177AA1FB0077045B /* SDNAppDelegate.h */,
 				984B788E177AA1FB0077045B /* SDNAppDelegate.m */,
-				984B7896177AA1FB0077045B /* SDNViewController.h */,
-				984B7897177AA1FB0077045B /* SDNViewController.m */,
-				984B7899177AA1FB0077045B /* SDNViewController_iPhone.xib */,
-				984B789C177AA1FB0077045B /* SDNViewController_iPad.xib */,
+				984B78A7177AA3010077045B /* Interface */,
+				984B78A9177AA4C70077045B /* Audio */,
 				984B7885177AA1FB0077045B /* Supporting Files */,
 			);
 			path = Sidna;
@@ -99,6 +111,8 @@
 		984B7885177AA1FB0077045B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				984B7899177AA1FB0077045B /* SDNViewController_iPhone.xib */,
+				984B789C177AA1FB0077045B /* SDNViewController_iPad.xib */,
 				984B7886177AA1FB0077045B /* Sidna-Info.plist */,
 				984B7887177AA1FB0077045B /* InfoPlist.strings */,
 				984B788A177AA1FB0077045B /* main.m */,
@@ -108,6 +122,26 @@
 				984B7894177AA1FB0077045B /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		984B78A7177AA3010077045B /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				984B7896177AA1FB0077045B /* SDNViewController.h */,
+				984B7897177AA1FB0077045B /* SDNViewController.m */,
+				984B78A4177AA2F10077045B /* SDNString.h */,
+				984B78A5177AA2F10077045B /* SDNString.m */,
+			);
+			name = Interface;
+			sourceTree = "<group>";
+		};
+		984B78A9177AA4C70077045B /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				984B78AA177AA67B0077045B /* SDNAudio.h */,
+				984B78AB177AA67B0077045B /* SDNAudio.m */,
+			);
+			name = Audio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +215,8 @@
 				984B788B177AA1FB0077045B /* main.m in Sources */,
 				984B788F177AA1FB0077045B /* SDNAppDelegate.m in Sources */,
 				984B7898177AA1FB0077045B /* SDNViewController.m in Sources */,
+				984B78A6177AA2F10077045B /* SDNString.m in Sources */,
+				984B78AC177AA67B0077045B /* SDNAudio.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
