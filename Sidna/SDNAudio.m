@@ -13,6 +13,7 @@
     AUGraph _graph;
     AudioUnit _rioUnit;
     AudioUnit _mixerUnit;
+    AudioUnit _effectUnit;
     
     AudioUnit _drones[STRING_COUNT];
     AudioUnit _varispeeds[STRING_COUNT];
@@ -26,12 +27,14 @@
 
 - (void)enableDrone:(NSInteger)tag
 {
-    CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x90, _notes[tag], 127, 0),  "note");
+    CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x90, _notes[tag], 127, 0), "on");
 }
 
 - (void)disableDrone:(NSInteger)tag
 {
-    CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x90, _notes[tag], 0, 0),  "note");
+    CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x80, _notes[tag], 0, 0), "off");
+    CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x90, _notes[tag] + 12, 40, 0), "octave");
+    //CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x80, _notes[tag] + 12, 0, 20), "octave");
 }
 
 - (void)setDrone:(NSInteger)tag note:(NSInteger)note
@@ -41,8 +44,6 @@
 
 - (void)updateDrone:(NSInteger)tag percentage:(Float32)percentage
 {
-    //percentage *= 3.75;
-    //percentage += 0.25;
     percentage *= 0.5f;
     percentage += 1.f;
     CheckError(AudioUnitSetParameter(_varispeeds[tag], kVarispeedParam_PlaybackRate, kAudioUnitScope_Global, 0, percentage, 0), "rate");
@@ -67,12 +68,7 @@
     return YES;
 }
 
-/*
- rioNode, rioUnit
- register nodes & units
- */
-
-#pragma mark graph setup
+#pragma mark - AUGraph
 
 - (BOOL)setupAUGraph
 {
@@ -80,6 +76,7 @@
     
     AUNode rioNode = [self addNodeWithType:kAudioUnitType_Output AndSubtype:kAudioUnitSubType_RemoteIO];
     AUNode mixerNode = [self addNodeWithType:kAudioUnitType_Mixer AndSubtype:kAudioUnitSubType_MultiChannelMixer];
+    AUNode effectNode = [self addNodeWithType:kAudioUnitType_Effect AndSubtype:kAudioUnitSubType_Reverb2];
     
     AUNode varispeedNodes[STRING_COUNT];
     AUNode droneNodes[STRING_COUNT];
@@ -93,6 +90,15 @@
     
     _rioUnit = [self unitFromNode:rioNode];
     _mixerUnit = [self unitFromNode:mixerNode];
+    _effectUnit = [self unitFromNode:effectNode];
+    
+    AudioStreamBasicDescription effectASBD;
+    UInt32 asbdSize = sizeof(effectASBD);
+    memset(&effectASBD, 0, asbdSize);
+    CheckError(AudioUnitGetProperty(_effectUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &effectASBD, &asbdSize), "asbd from reverb");
+    CheckError(AudioUnitSetProperty(_mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &effectASBD, sizeof(effectASBD)), "set on mixer");
+    
+    CheckError(AudioUnitSetParameter(_effectUnit, kReverb2Param_DryWetMix, kAudioUnitScope_Global, 0, 40.0, 0), "reverb gain");
     
     AudioStreamBasicDescription samplerASBD;
     UInt32 samplerASBDSize = sizeof(samplerASBD);
@@ -109,30 +115,21 @@
         CheckError(AUGraphConnectNodeInput(_graph, varispeedNodes[i], 0, mixerNode, i), "vari to mixer");
     }
     
-    CheckError(AUGraphConnectNodeInput(_graph, mixerNode, 0, rioNode, 0), "mixer to rio");
+    CheckError(AUGraphConnectNodeInput(_graph, mixerNode, 0, effectNode, 0), "mixer to effect");
+    CheckError(AUGraphConnectNodeInput(_graph, effectNode, 0, rioNode, 0), "effect to rio");
     
     CheckError(AUGraphInitialize(_graph), "initialize graph");
     CheckError(AudioSessionSetActive(1), "activate audio session");
     CheckError(AUGraphStart(_graph), "start graph");
     
-//    for (int i = 0; i < STRING_COUNT; i++) {
-//        CheckError(MusicDeviceMIDIEvent(_drones[i], 0x90, 62, 127, 0),  "note");
-//    }
-    
     return YES;
 }
 
-#pragma mark private helper functions
-
-- (CFURLRef)urlRefWithTitle:(NSString *)title
-{
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:title ofType:@"m4a"];
-    return CFURLCreateWithFileSystemPath(kCFAllocatorDefault, (__bridge CFStringRef)filePath, kCFURLPOSIXPathStyle, false);
-}
+#pragma mark - Helpers
 
 static void InterruptionListener (void *inUserData, UInt32 inInterruptionState)
 {
-	NSLog(@"INTERRUPTION");
+	NSLog(@"Interruption");
 }
 
 - (AUNode)addNodeWithType:(OSType)type AndSubtype:(OSType)subtype

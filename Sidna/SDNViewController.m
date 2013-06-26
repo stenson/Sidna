@@ -15,7 +15,6 @@
 @interface SDNViewController () {
     SDNAudio *_audio;
 }
-
 @end
 
 @implementation SDNViewController
@@ -37,7 +36,7 @@
     _audio = [[SDNAudio alloc] init];
     [_audio power];
     
-    NSInteger notes[] = { 60, 67, 72, 74 };
+    NSInteger notes[] = { 79, 48, 60, 67, 72, 74 };
     
     for (int i = 0; i < STRING_COUNT; i++) {
         SDNString *string = [[SDNString alloc] init];
@@ -54,12 +53,13 @@
 - (void)viewDidLayoutSubviews
 {
     NSInteger count = self.view.subviews.count;
-    NSInteger i = 0;
-    CGRect strings[count];
-    CGRectDivideRectIntoEqualSubs(self.view.bounds, strings, count, CGRectMinXEdge);
+    CGRect strings[count-1];
+    CGRect highG;
     
-    for (SDNString *string in self.view.subviews) {
-        string.frame = strings[i++];
+    CGRectDivideRectIntoEqualSubs(CGRectSegment(self.view.bounds, &highG, NULL, 44.f, CGRectMinXEdge), strings, count-1, CGRectMinXEdge);
+    [self.view.subviews[0] setFrame:highG];
+    for (int i = 1; i < count; i++) {
+        [self.view.subviews[i] setFrame:strings[i-1]];
     }
 }
 

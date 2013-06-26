@@ -9,6 +9,6 @@
 #ifndef Sidna_SDNConstants_h
 #define Sidna_SDNConstants_h
 
-#define STRING_COUNT 4
+#define STRING_COUNT 6
 
 #endif
