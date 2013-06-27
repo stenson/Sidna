@@ -14,8 +14,10 @@
     AudioUnit _rioUnit;
     AudioUnit _mixerUnit;
     AudioUnit _effectUnit;
+    AudioUnit _distortionUnit;
     
     AudioUnit _drones[STRING_COUNT];
+    BOOL _droning[STRING_COUNT];
     AudioUnit _varispeeds[STRING_COUNT];
     NSInteger _notes[STRING_COUNT];
 }
@@ -27,13 +29,19 @@
 
 - (void)enableDrone:(NSInteger)tag
 {
-    CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x90, _notes[tag], 127, 0), "on");
+    if (_droning[tag] != YES) {
+        _droning[tag] = YES;
+        CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x90, _notes[tag], 127, 0), "on");
+    }
 }
 
 - (void)disableDrone:(NSInteger)tag
 {
-    CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x80, _notes[tag], 0, 0), "off");
-    CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x90, _notes[tag] + 12, 40, 0), "octave");
+    if (_droning[tag]) {
+        _droning[tag] = NO;
+        CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x80, _notes[tag], 0, 0), "off");
+    }
+    //CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x90, _notes[tag] + 12, 40, 0), "octave");
     //CheckError(MusicDeviceMIDIEvent(_drones[tag], 0x80, _notes[tag] + 12, 0, 20), "octave");
 }
 
@@ -77,7 +85,7 @@
     AUNode rioNode = [self addNodeWithType:kAudioUnitType_Output AndSubtype:kAudioUnitSubType_RemoteIO];
     AUNode mixerNode = [self addNodeWithType:kAudioUnitType_Mixer AndSubtype:kAudioUnitSubType_MultiChannelMixer];
     AUNode effectNode = [self addNodeWithType:kAudioUnitType_Effect AndSubtype:kAudioUnitSubType_Reverb2];
-    
+    AUNode distortionNode = [self addNodeWithType:kAudioUnitType_Effect AndSubtype:kAudioUnitSubType_Distortion];
     AUNode varispeedNodes[STRING_COUNT];
     AUNode droneNodes[STRING_COUNT];
     
@@ -91,6 +99,7 @@
     _rioUnit = [self unitFromNode:rioNode];
     _mixerUnit = [self unitFromNode:mixerNode];
     _effectUnit = [self unitFromNode:effectNode];
+    _distortionUnit = [self unitFromNode:distortionNode];
     
     AudioStreamBasicDescription effectASBD;
     UInt32 asbdSize = sizeof(effectASBD);
@@ -99,6 +108,7 @@
     CheckError(AudioUnitSetProperty(_mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &effectASBD, sizeof(effectASBD)), "set on mixer");
     
     CheckError(AudioUnitSetParameter(_effectUnit, kReverb2Param_DryWetMix, kAudioUnitScope_Global, 0, 40.0, 0), "reverb gain");
+    CheckError(AudioUnitSetParameter(_distortionUnit, kDistortionParam_FinalMix, kAudioUnitScope_Global, 0, 5.0, 0), "delay time");
     
     AudioStreamBasicDescription samplerASBD;
     UInt32 samplerASBDSize = sizeof(samplerASBD);
@@ -116,7 +126,8 @@
     }
     
     CheckError(AUGraphConnectNodeInput(_graph, mixerNode, 0, effectNode, 0), "mixer to effect");
-    CheckError(AUGraphConnectNodeInput(_graph, effectNode, 0, rioNode, 0), "effect to rio");
+    CheckError(AUGraphConnectNodeInput(_graph, effectNode, 0, distortionNode, 0), "effect to dist");
+    CheckError(AUGraphConnectNodeInput(_graph, distortionNode, 0, rioNode, 0), "effect to rio");
     
     CheckError(AUGraphInitialize(_graph), "initialize graph");
     CheckError(AudioSessionSetActive(1), "activate audio session");
