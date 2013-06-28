@@ -52,6 +52,7 @@
     }
     
     self.view.multipleTouchEnabled = YES;
+    self.view.exclusiveTouch = YES;
 }
 
 - (void)viewDidLayoutSubviews

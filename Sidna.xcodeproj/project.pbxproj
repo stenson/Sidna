@@ -22,6 +22,8 @@
 		984B78A6177AA2F10077045B /* SDNString.m in Sources */ = {isa = PBXBuildFile; fileRef = 984B78A5177AA2F10077045B /* SDNString.m */; };
 		984B78AC177AA67B0077045B /* SDNAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 984B78AB177AA67B0077045B /* SDNAudio.m */; };
 		984B78AE177AA6C30077045B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 984B78AD177AA6C30077045B /* AudioToolbox.framework */; };
+		989F6611177D49CB00BA66C1 /* MellotronFluteC.aupreset in Resources */ = {isa = PBXBuildFile; fileRef = 989F6610177D49CB00BA66C1 /* MellotronFluteC.aupreset */; };
+		989F6613177D4A4800BA66C1 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 989F6612177D4A4800BA66C1 /* Sounds */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		984B78AB177AA67B0077045B /* SDNAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDNAudio.m; sourceTree = "<group>"; };
 		984B78AD177AA6C30077045B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		984B78AF177AA81E0077045B /* SDNConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDNConstants.h; sourceTree = "<group>"; };
+		989F6610177D49CB00BA66C1 /* MellotronFluteC.aupreset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MellotronFluteC.aupreset; sourceTree = "<group>"; };
+		989F6612177D4A4800BA66C1 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 		984B7885177AA1FB0077045B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				989F6612177D4A4800BA66C1 /* Sounds */,
+				989F6610177D49CB00BA66C1 /* MellotronFluteC.aupreset */,
 				984B7899177AA1FB0077045B /* SDNViewController_iPhone.xib */,
 				984B789C177AA1FB0077045B /* SDNViewController_iPad.xib */,
 				984B7886177AA1FB0077045B /* Sidna-Info.plist */,
@@ -202,6 +208,8 @@
 				984B7895177AA1FB0077045B /* Default-568h@2x.png in Resources */,
 				984B789B177AA1FB0077045B /* SDNViewController_iPhone.xib in Resources */,
 				984B789E177AA1FB0077045B /* SDNViewController_iPad.xib in Resources */,
+				989F6611177D49CB00BA66C1 /* MellotronFluteC.aupreset in Resources */,
+				989F6613177D4A4800BA66C1 /* Sounds in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

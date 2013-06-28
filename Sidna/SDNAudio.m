@@ -133,7 +133,16 @@
     CheckError(AudioSessionSetActive(1), "activate audio session");
     CheckError(AUGraphStart(_graph), "start graph");
     
+    [self loadPresetToUnit:_drones[1]];
+    
     return YES;
+}
+
+- (OSStatus)loadPresetToUnit:(AudioUnit)unit {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"MellotronFluteC" ofType:@"aupreset"];
+    NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:path];
+    CFPropertyListRef plistRef = (__bridge CFPropertyListRef)plist;
+    return AudioUnitSetProperty(unit, kAudioUnitProperty_ClassInfo, kAudioUnitScope_Global, 0, &plistRef, sizeof(CFPropertyListRef));
 }
 
 #pragma mark - Helpers
