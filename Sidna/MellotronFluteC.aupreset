@@ -302,9 +302,9 @@
 						<key>enabled</key>
 						<true/>
 						<key>loop enabled</key>
-						<false/>
+						<true/>
 						<key>root key</key>
-						<integer>48</integer>
+						<integer>60</integer>
 						<key>waveform</key>
 						<integer>1</integer>
 					</dict>

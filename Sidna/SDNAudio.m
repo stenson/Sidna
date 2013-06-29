@@ -134,6 +134,7 @@
     CheckError(AUGraphStart(_graph), "start graph");
     
     [self loadPresetToUnit:_drones[1]];
+    [self loadPresetToUnit:_drones[5]];
     
     return YES;
 }

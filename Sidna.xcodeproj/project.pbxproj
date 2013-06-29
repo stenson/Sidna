@@ -24,6 +24,7 @@
 		984B78AE177AA6C30077045B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 984B78AD177AA6C30077045B /* AudioToolbox.framework */; };
 		989F6611177D49CB00BA66C1 /* MellotronFluteC.aupreset in Resources */ = {isa = PBXBuildFile; fileRef = 989F6610177D49CB00BA66C1 /* MellotronFluteC.aupreset */; };
 		989F6613177D4A4800BA66C1 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 989F6612177D4A4800BA66C1 /* Sounds */; };
+		989F661C177E484500BA66C1 /* SDNFretboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 989F661B177E484500BA66C1 /* SDNFretboard.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,8 @@
 		984B78AF177AA81E0077045B /* SDNConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDNConstants.h; sourceTree = "<group>"; };
 		989F6610177D49CB00BA66C1 /* MellotronFluteC.aupreset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MellotronFluteC.aupreset; sourceTree = "<group>"; };
 		989F6612177D4A4800BA66C1 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
+		989F661A177E484500BA66C1 /* SDNFretboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDNFretboard.h; sourceTree = "<group>"; };
+		989F661B177E484500BA66C1 /* SDNFretboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDNFretboard.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 				984B7897177AA1FB0077045B /* SDNViewController.m */,
 				984B78A4177AA2F10077045B /* SDNString.h */,
 				984B78A5177AA2F10077045B /* SDNString.m */,
+				989F661A177E484500BA66C1 /* SDNFretboard.h */,
+				989F661B177E484500BA66C1 /* SDNFretboard.m */,
 			);
 			name = Interface;
 			sourceTree = "<group>";
@@ -225,6 +230,7 @@
 				984B7898177AA1FB0077045B /* SDNViewController.m in Sources */,
 				984B78A6177AA2F10077045B /* SDNString.m in Sources */,
 				984B78AC177AA67B0077045B /* SDNAudio.m in Sources */,
+				989F661C177E484500BA66C1 /* SDNFretboard.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

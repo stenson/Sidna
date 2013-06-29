@@ -11,11 +11,13 @@
 #import "CGGeometryAdditions.h"
 #import "SDNAudio.h"
 #import "SDNConstants.h"
+#import "SDNFretboard.h"
 
 @interface SDNViewController () {
     SDNAudio *_audio;
     CGFloat _ys[STRING_COUNT];
     CGFloat _percents[STRING_COUNT];
+    NSMutableSet *_touches;
 }
 @end
 
@@ -38,12 +40,14 @@
     _audio = [[SDNAudio alloc] init];
     [_audio power];
     
+    _touches = [NSMutableSet setWithCapacity:6];
     NSInteger notes[] = { 79, 48, 60, 67, 72, 74 };
     
     for (int i = 0; i < STRING_COUNT; i++) {
         SDNString *string = [[SDNString alloc] init];
         string.backgroundColor = [self randomColor];
         string.tag = i;
+        string.userInteractionEnabled = NO;
         UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleStringPress:)];
         press.minimumPressDuration = 0.f;
         //[string addGestureRecognizer:press];
@@ -52,7 +56,7 @@
     }
     
     self.view.multipleTouchEnabled = YES;
-    self.view.exclusiveTouch = YES;
+    //self.view.exclusiveTouch = YES;
 }
 
 - (void)viewDidLayoutSubviews
@@ -72,6 +76,10 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+//    for (UITouch *touch in touches) {
+//        [_touches addObject:touch];
+//    }
+    //NSLog(@"%@", [_touches anyObject]);
     [self handleTouches:event.allTouches];
 }
 
@@ -83,11 +91,15 @@
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // look out for 6 touches
+    [_touches removeAllObjects];
     NSLog(@"cancelled: %i", touches.count);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+//    for (UITouch *touch in touches) {
+//        [_touches removeObject:touch];
+//    }
     [self handleTouches:event.allTouches];
 }
 
